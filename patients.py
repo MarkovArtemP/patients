@@ -1,6 +1,7 @@
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtSql import *
+import PatientsWindow
 
 def getQuery(host, port, database, user, password):
     db = QSqlDatabase.addDatabase("QMYSQL")
@@ -14,27 +15,20 @@ def getQuery(host, port, database, user, password):
     else:
         return None
 
-def getTable(query):
-    table = QTableWidget()
-    table.setWindowTitle("Patients")
-    table.setRowCount(query.size())
-    table.setColumnCount(query.record().count() - 2)
-    record = q.record()
-    labels = ['ФИО']
-    for i in range(3, record.count()):
-        labels.append(record.fieldName(i))
-    table.setHorizontalHeaderLabels(labels)
+def getDataList(query):
+    list = []
     index = 0
     while query.next():
-        table.setItem(index, 0, QTableWidgetItem(query.value(0) + ' ' + query.value(1) + ' ' + query.value(2)))
-        table.setItem(index, 1, QTableWidgetItem(query.value(3)))
+        row = []
+        row.append(query.value(0) + ' ' + query.value(1) + ' ' + query.value(2))
+        row.append(query.value(3))
         sex = "муж" if query.value(4) == 1 else "жен"
-        table.setItem(index, 2, QTableWidgetItem(sex))
+        row.append(sex)
         for i in range(3, query.record().count() - 2):
-            table.setItem(index, i, QTableWidgetItem(query.value(i + 2)))
+            row.append(query.value(i + 2))
         index += 1
-    table.resizeColumnsToContents()
-    return table
+        list.append(tuple(row))
+    return list
 
 # TODO init params
 h = "127.0.0.1"
@@ -65,7 +59,15 @@ q.exec_(
         "LEFT JOIN rbPolicyType ON rbPolicyType.id = ClientPolicy.policyType_id " +
         ";")
 
-app = QApplication(sys.argv)
-tabl = getTable(q)
-tabl.show()
-sys.exit(app.exec_())
+
+app = QApplication([])
+
+record = q.record()
+labels = ['ФИО']
+for i in range(3, record.count()):
+    labels.append(record.fieldName(i))
+index = 0
+
+win =PatientsWindow.PatientsWindow(getDataList(q), labels)
+win.show()
+app.exec_()
