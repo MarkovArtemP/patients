@@ -32,6 +32,7 @@ class PatientsWindow(QWidget):
 
         #CREATE SEARCH AREA
 
+        #create text fields
         labels = header.copy()
         labels.__delitem__(0)
         labels.insert(0, 'Отчество')
@@ -51,6 +52,7 @@ class PatientsWindow(QWidget):
             searchHBox.addWidget(qLabels[i])
             searchHBox.addWidget(linesEdit[i])
 
+        #Create buttons
         searchButton = QPushButton("Search")
         clearButton = QPushButton("Clear")
         buttonsHBox = QHBoxLayout()
