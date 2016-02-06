@@ -20,12 +20,8 @@ def getDataList(query):
     index = 0
     while query.next():
         row = []
-        row.append(query.value(0) + ' ' + query.value(1) + ' ' + query.value(2))
-        row.append(query.value(3))
-        sex = "муж" if query.value(4) == 1 else "жен"
-        row.append(sex)
-        for i in range(3, query.record().count() - 2):
-            row.append(query.value(i + 2))
+        for i in range(0, query.record().count()):
+            row.append(query.value(i))
         index += 1
         list.append(tuple(row))
     return list
@@ -38,8 +34,9 @@ u = "root"
 passwd = "bd2crcv6"
 q = getQuery(h, p, dbase, u, passwd)
 q.exec_(
-        "SELECT Client.lastName, Client.firstName, Client.patrName, " +
+        "SELECT CONCAT_WS(' ', Client.lastName, Client.firstName, Client.patrName) AS ФИО, " +
         "DATE_FORMAT(Client.birthDate, '%d.%m.%Y') AS 'Дата рождения', " +
+        "((YEAR(CURRENT_DATE) - YEAR(Client.birthDate)) - (DATE_FORMAT(CURRENT_DATE, '%m%d') < DATE_FORMAT(Client.birthDate, '%m%d'))) AS Возраст, " +
         "Client.sex AS 'Пол', " +
         "rbDocumentType.name AS 'Тип документа', " +
         "ClientDocument.serial AS 'Серия', " +
@@ -63,8 +60,8 @@ q.exec_(
 app = QApplication([])
 
 record = q.record()
-labels = ['ФИО']
-for i in range(3, record.count()):
+labels = []
+for i in range(0, record.count()):
     labels.append(record.fieldName(i))
 index = 0
 
