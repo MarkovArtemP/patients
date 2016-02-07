@@ -4,7 +4,7 @@ from searchArea.Field import Field
 
 
 class FieldsWidget(QWidget):
-    def __init__(self, labels, parent=None):
+    def __init__(self, labels):
         QWidget.__init__(self)
         self.setFixedHeight(200)
         self.labels = labels
@@ -36,6 +36,12 @@ class FieldsWidget(QWidget):
             self.content.itemAt(i).delete()
 
     def clearAll(self):
-        count = self.content.count()
-        for i in range(count - 1, -1, -1):
+        for i in range(self.content.count()):
             self.content.itemAt(i).lineEdit.setText(None)
+
+    def collectQueryParameters(self):
+        parameters = []
+        for i in range(self.content.count()):
+            parameters.append(self.content.itemAt(i).getParameters())
+        return parameters
+

@@ -31,9 +31,13 @@ class SearchArea(QVBoxLayout):
         self.connect(self.clearButton, SIGNAL('clicked()'), self.fieldsWidget.clearAll)
         botButtonsHBox.addWidget(self.clearButton)
 
-        searchButton = QPushButton("Search")
-        botButtonsHBox.addWidget(searchButton)
+        self.searchButton = QPushButton("Search")
+        self.connect(self.searchButton, SIGNAL('clicked()'), self.search)
+        botButtonsHBox.addWidget(self.searchButton)
 
         self.addLayout(botButtonsHBox)
+
+    def search(self):
+        print(self.fieldsWidget.collectQueryParameters())
 
 

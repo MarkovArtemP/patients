@@ -1,6 +1,7 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+
 class Field(QHBoxLayout):
     def __init__(self, cbItems, parent):
         QHBoxLayout.__init__(self)
@@ -30,3 +31,11 @@ class Field(QHBoxLayout):
         self.lineEdit.close()
         self.removeButton.close()
         self.parent.removeItem(self)
+
+    def getParameters(self):
+        parameters = []
+        parameters.append(self.cb1.currentText())
+        parameters.append(self.cb2.currentText())
+        parameters.append(self.lineEdit.text())
+        return parameters
+
