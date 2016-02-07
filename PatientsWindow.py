@@ -1,4 +1,3 @@
-from PyQt4.QtCore import SLOT
 from PyQt4.QtGui import *
 
 from menu.MenuBar import MenuBar

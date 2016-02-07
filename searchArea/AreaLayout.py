@@ -1,11 +1,10 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from searchArea.Field import Field
+from searchArea.Fields import FieldsWidget
 
 
 class SearchArea(QVBoxLayout):
     def __init__(self, labels):
-        self.labels = labels
         QVBoxLayout.__init__(self)
 
         # Create top buttons
@@ -20,9 +19,9 @@ class SearchArea(QVBoxLayout):
 
         # Create search fields layout
 
-
-
         self.fieldsVBox = QVBoxLayout()
+        self.fieldsWidget = FieldsWidget(labels)
+        self.fieldsVBox.addWidget(self.fieldsWidget)
         self.addLayout(self.fieldsVBox)
 
         # Create bottom buttons
@@ -38,17 +37,10 @@ class SearchArea(QVBoxLayout):
         self.addLayout(botButtonsHBox)
 
     def addField(self):
-        sField = Field(self.labels, self.fieldsVBox)
-        self.fieldsVBox.addLayout(sField)
+        self.fieldsWidget.addContent()
 
     def removeAll(self):
-        self.fieldsVBox.count()
-        count = self.fieldsVBox.count()
-        for i in range(count - 1, -1, -1):
-            self.fieldsVBox.itemAt(i).delete()
+        self.fieldsWidget.removeAll()
 
     def clearAll(self):
-        self.fieldsVBox.count()
-        count = self.fieldsVBox.count()
-        for i in range(count - 1, -1, -1):
-            self.fieldsVBox.itemAt(i).lineEdit.setText(None)
+        self.fieldsWidget.clearAll()
