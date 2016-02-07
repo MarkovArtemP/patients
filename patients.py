@@ -37,7 +37,7 @@ q.exec_(
         "SELECT CONCAT_WS(' ', Client.lastName, Client.firstName, Client.patrName) AS ФИО, " +
         "DATE_FORMAT(Client.birthDate, '%d.%m.%Y') AS 'Дата рождения', " +
         "((YEAR(CURRENT_DATE) - YEAR(Client.birthDate)) - (DATE_FORMAT(CURRENT_DATE, '%m%d') < DATE_FORMAT(Client.birthDate, '%m%d'))) AS Возраст, " +
-        "Client.sex AS 'Пол', " +
+        "IF(Client.sex = 1, 'Муж', 'Жен' ) AS `Пол`, " +
         "rbDocumentType.name AS 'Тип документа', " +
         "ClientDocument.serial AS 'Серия', " +
         "ClientDocument.number AS 'Номер', " +
