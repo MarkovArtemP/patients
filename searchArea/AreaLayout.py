@@ -6,12 +6,13 @@ from searchArea.Fields import FieldsWidget
 class SearchArea(QVBoxLayout):
     def __init__(self, labels):
         QVBoxLayout.__init__(self)
+        self.fieldsWidget = FieldsWidget(labels)
 
         # Create top buttons
         addButton = QPushButton("Add search field")
-        self.connect(addButton, SIGNAL('clicked()'), self.addField)
+        self.connect(addButton, SIGNAL('clicked()'), self.fieldsWidget.addContent)
         removeAllButton = QPushButton("Remove all fields")
-        self.connect(removeAllButton, SIGNAL('clicked()'), self.removeAll)
+        self.connect(removeAllButton, SIGNAL('clicked()'), self.fieldsWidget.removeAll)
         topButtonsHBox = QHBoxLayout()
         topButtonsHBox.addWidget(addButton)
         topButtonsHBox.addWidget(removeAllButton)
@@ -20,7 +21,6 @@ class SearchArea(QVBoxLayout):
         # Create search fields layout
 
         self.fieldsVBox = QVBoxLayout()
-        self.fieldsWidget = FieldsWidget(labels)
         self.fieldsVBox.addWidget(self.fieldsWidget)
         self.addLayout(self.fieldsVBox)
 
@@ -28,7 +28,7 @@ class SearchArea(QVBoxLayout):
         botButtonsHBox = QHBoxLayout()
 
         self.clearButton = QPushButton("Clear all fields")
-        self.connect(self.clearButton, SIGNAL('clicked()'), self.clearAll)
+        self.connect(self.clearButton, SIGNAL('clicked()'), self.fieldsWidget.clearAll)
         botButtonsHBox.addWidget(self.clearButton)
 
         searchButton = QPushButton("Search")
@@ -36,11 +36,4 @@ class SearchArea(QVBoxLayout):
 
         self.addLayout(botButtonsHBox)
 
-    def addField(self):
-        self.fieldsWidget.addContent()
 
-    def removeAll(self):
-        self.fieldsWidget.removeAll()
-
-    def clearAll(self):
-        self.fieldsWidget.clearAll()
